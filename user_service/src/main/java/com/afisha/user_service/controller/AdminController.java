@@ -18,8 +18,6 @@ public class AdminController {
 
     @Autowired
     IUserService service;
-    @Autowired
-    PasswordEncoder encoder;
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody UserCreate userCreate) {

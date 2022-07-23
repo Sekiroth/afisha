@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -45,18 +44,16 @@ public class UserService implements IUserService {
     public User findByMail(String mail) {
         Optional<User> optional = repository.findByMail(mail);
         if (optional.isEmpty()) {
-            throw new IllegalArgumentException("Not found");
-        }
-        return optional.get();
+            return null;
+        } else return optional.get();
     }
 
     @Override
     public User findByUuid(UUID uuid) {
         Optional<User> optional = repository.findById(uuid);
         if (optional.isEmpty()) {
-            throw new IllegalArgumentException("Not found");
-        }
-        return optional.get();
+            return null;
+        } else return optional.get();
     }
 
     @Override
@@ -69,10 +66,9 @@ public class UserService implements IUserService {
 
     @Override
     public void register(UserRegistration userRegistration) {
-        if (userRegistration.getMail().equals(findByMail(userRegistration.getMail()).getMail())) {
+        if (findByMail(userRegistration.getMail()) != null) {
             throw new IllegalArgumentException("Already exists");
-        }
-        repository.save(mappingService.create(userRegistration));
+        } else repository.save(mappingService.create(userRegistration));
     }
 
     @Override
